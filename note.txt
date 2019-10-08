@@ -1,0 +1,19 @@
++ public chứa các file css , js, images , upload backend và front_end
+	+ thư mục admin: chứa các file admin
+	+ thư mục frontend: chứa giao diện bên ngoài
+
++ thư mực admin ! chứa các file xử lý của admin
++ thư mục autoload và file autoload.php 
+	+ file này để gọi các file xử lý chung mà tất cả file đều phải gọi??
++ thư mục layouts : chứa các file 
+
+
+
+thư mục admin::
+tạo giống các thự mục còn lại
++ thư mục modules: chưa các file quản lý
+
+thư mục libraties:
+	+ tạo các file xử lý
+		+ function
+		+ database
