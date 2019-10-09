@@ -5,8 +5,8 @@
         </div>
         <!-- /#wrapper -->
         <!-- jQuery -->
-        <script src="/PHP_Thuan/public/admin/js/jquery.js"></script>
+        <script src="<?php echo base_url() ?>public/admin/js/jquery.js"></script>
         <!-- Bootstrap Core JavaScript -->
-        <script src="/PHP_Thuan/public/admin/js/bootstrap.min.js"></script>
+        <script src="<?php echo base_url() ?>public/admin/js/bootstrap.min.js"></script>
     </body>
 </html>

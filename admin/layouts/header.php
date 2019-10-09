@@ -8,11 +8,11 @@
         <meta name="author" content="">
         <title>Trang Admin</title>
         <!-- Bootstrap Core CSS -->
-        <link href="/PHP_Thuan/public/admin/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?php echo base_url() ?>public/admin/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
-        <link href="/PHP_Thuan/public/admin/css/sb-admin.css" rel="stylesheet">
+        <link href="<?php echo base_url() ?>public/admin/css/sb-admin.css" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="/PHP_Thuan/public/admin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url() ?>public/admin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -142,9 +142,13 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
                         <li>
-                            <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Bảng điều khiển</a>
+                            <a href="<?php echo base_url() ?>admin"><i class="fa fa-fw fa-dashboard"></i> Bảng điều khiển</a>
                         </li>
-                       
+                        <li class="<?php echo isset($open) && $open = 'category' ? 'active' : '' ?>"></li>
+                        <li>
+                            <a href="<?php echo modules("category") ?>"><i class="fa fa-fw fa-dashboard"></i>Danh mục sản phẩm</a>
+                        </li>
+
                         <li>
                             <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
                         </li>

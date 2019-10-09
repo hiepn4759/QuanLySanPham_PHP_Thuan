@@ -1,5 +1,6 @@
 
 <?php
+    $open = "category";
     require_once __DIR__. "/../../autoload/autoload.php";
 
     if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -7,7 +8,8 @@
 
         $data =
         [  
-            "name" => postInput('name')
+            "name" => postInput('name'),
+            "slug" => to_slug(postInput("name"))
         ];
         $error  = [];
         
@@ -17,11 +19,19 @@
             $error['name'] = "Nhập lại đầy đủ tên danh mục";
         }
 
-        //  neu trong thi ko loi
+        //  neu trống thi ko loi
         if(empty($error))
         {
             $id_insert = $db->insert("category", $data);
-            print_r($id_insert);
+            if($id_insert > 0){
+
+                $_SESSION['success'] = "Thêm mới danh mục sản phẩm thành công";
+                redirectAdmin("category");
+            }else{
+                //them moi that bai
+                 $_SESSION['error'] = "Thêm mới danh mục sản phẩm thất bại";
+                 redirectAdmin("category");
+            }
         }
     }
 
