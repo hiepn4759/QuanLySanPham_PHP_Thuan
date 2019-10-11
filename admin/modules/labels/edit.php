@@ -1,16 +1,16 @@
 
 <?php
-    $open = "category";
+    $open = "labels";
     require_once __DIR__. "/../../autoload/autoload.php";
 
     $id = intval(getInput('id'));
 
-    $EditCategory = $db ->fetchID("category", $id);
+    $EditLabels = $db ->fetchID("labels", $id);
 
-    if(empty($EditCategory))
+    if(empty($EditLabels))
     {
         $_SESSION['error'] = "Dữ liệu không tồn tại";
-        redirectAdmin("category");
+        redirectAdmin("labels");
     }
 
     if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -19,53 +19,52 @@
         $data =
         [  
             "name" => postInput('name'),
-            "slug" => postInput('slug')
+            "derscription" => postInput('derscription')
         ];
         $error  = [];
         
 
-        if(postInput('name') == '')
+       if(postInput('name') == '')
         {
-            $error['name'] = "Nhập lại đầy đủ tên danh mục";
-        }
-        if(postInput('slug') == ''){
-            $error['slug'] = "Nhập lại miêu tả danh mục";
+            $error['name'] = "Nhập lại đầy đủ thông tin";
         }
 
+        if(postInput('derscription') == ''){
 
+            $error['derscription'] = "Nhập lại đầy đủ thông tin";
+        }
+        
         //  neu trống thi ko loi
         if(empty($error))
         {
-            //kiem tra
-            if($EditCategory['name'] != $data['name']){
-                $isset = $db->fetchOne("category", "name = '".$data['name']."' ");
-
+            if($EditLabels['name'] != $data['name']){
+                $isset = $db->fetchOne("labels", "name = '".$data['name']."' ");
                 if(count($isset) > 0 ){
                      $_SESSION['error'] = "Danh mục đã tồn tại";
 
                 }else{
-                    $id_update = $db->update("category", $data, array("id" => $id));
+                    $id_update = $db->update("labels", $data, array("id" => $id));
                     if($id_update > 0){
 
                         $_SESSION['success'] = "Thay đổi thành công";
-                        redirectAdmin("category");
+                        redirectAdmin("labels");
                     }else{
                         //them moi that bai
-                         $_SESSION['error'] = "Cập nhật danh sách sản phẩm thất bại";
-                         redirectAdmin("category");
-                    }
+                         $_SESSION['error'] = "Cập nhật nhãn sản phẩm thất bại";
+                         redirectAdmin("labels");
+                    } 
                 }
             }else{
-                    $id_update = $db->update("category", $data, array("id" => $id));
-                    if($id_update > 0){
+                $id_update = $db->update("labels", $data, array("id" => $id));
+                if($id_update > 0){
 
-                        $_SESSION['success'] = "Thay đổi thành công";
-                        redirectAdmin("category");
-                    }else{
-                        //them moi that bai
-                         $_SESSION['error'] = "Cập nhật danh sách sản phẩm thất bại";
-                         redirectAdmin("category");
-                    }
+                    $_SESSION['success'] = "Thay đổi thành công";
+                    redirectAdmin("labels");
+                }else{
+                    //them moi that bai
+                     $_SESSION['error'] = "Cập nhật nhãn sản phẩm thất bại";
+                     redirectAdmin("labels");
+                } 
             }
             
         }
@@ -81,14 +80,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Thêm mới danh mục
+                    Update nhãn
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        <i class="fa fa-dashboard"></i>  <a href="index.html">Quản trị</a>
                     </li>
                     <li>
-                        <i ></i>  <a href="index.html">Danh mục</a>
+                        <i ></i>  <a href="index.html">Nhãn</a>
                     </li>
                     <li class="active">
                         <i class="fa fa-file"></i> Thêm mới
@@ -103,9 +102,10 @@
             <div class="col-md-2">
                 <form  action="" method="POST">
                      <div class="form-group">
-                        <label for="exampleInputEmail1">Tên danh mục</label>
+                        <label for="exampleInputEmail1">Tên nhãn</label>
 
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tên danh mục" name="name" value="<?php echo $EditCategory['name'] ?>">
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tên danh mục" name="name" value="<?php echo $EditLabels['name'] ?>">
+
                         <?php if(isset( $error['name'])): ?>
 
                             <p class="text-danger"><?php echo $error['name']; ?></p>
@@ -115,13 +115,14 @@
                         <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
 
-                      <div class="form-group">
+                   <div class="form-group">
                         <label for="exampleInputEmail1">Miêu tả</label>
 
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Miêu tả" name="slug" value="<?php echo $EditCategory['slug'] ?>">
-                        <?php if(isset( $error['slug'])): ?>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Miêu tả nhãn" name="derscription" value="<?php echo $EditLabels['derscription'] ?>">
 
-                            <p class="text-danger"><?php echo $error['slug']; ?></p>
+                        <?php if(isset( $error['derscription'])): ?>
+
+                            <p class="text-danger"><?php echo $error['derscription']; ?></p>
 
                         <?php endif ?>
                         

@@ -5,4 +5,5 @@
 
     $db = new Database;
    
+   define("ROOT", $_SERVER['DOCUMENT_ROOT'] ."/PHP_Thuan/public/uploads/");
 ?>

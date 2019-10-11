@@ -1,11 +1,11 @@
 
 <?php
-     $open = "category";
+	$open = "labels";
     require_once __DIR__. "/../../autoload/autoload.php";
 
   
     
-    $category = $db -> fetchAll("category");
+    $labels = $db -> fetchAll("labels");
 ?>
 
 <?php require_once __DIR__. "/../../layouts/header.php"; ?>
@@ -15,19 +15,19 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Danh sách danh mục
+                    Danh sách nhãn
                     <a href="add.php" class="btn btn-info">Thêm mới</a>
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        <i class="fa fa-dashboard"></i>  <a href="index.html">Quản trị</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-file"></i> Danh mục
+                        <i class="fa fa-file"></i> Nhãn
                     </li>
                 </ol>
                 <div class="clearfix"></div>
-                <!-- Thong bao -->
+                <!-- Thông báo -->
                 <?php require_once __DIR__. "/../../../partials/notification.php"; ?>
             </div>
         </div>
@@ -46,12 +46,12 @@
         </thead>
         <tbody>
 
-            <?php $stt = 1; foreach ($category as $item): ?>
+            <?php $stt = 1; foreach ($labels as $item): ?>
 
                 <tr>
                     <td><?php echo $stt ?></td>
                     <td><?php echo $item['name'] ?></td>
-                    <td><?php echo $item['slug'] ?></td>
+                    <td><?php echo $item['derscription'] ?></td>
                     <td><?php echo $item['created_at'] ?></td>
                     <td>
                         <a href="edit.php?id=<?php echo $item['id'] ?>" class="btn btn-info btn-xs"><i class="fa fa-edit"></i>Sửa</a>
