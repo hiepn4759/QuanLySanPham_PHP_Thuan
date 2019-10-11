@@ -149,7 +149,7 @@
                         <li>
                             <a href="<?php echo modules("category") ?>"><i class="fa fa-fw fa-dashboard"></i>Danh mục sản phẩm</a>
                         </li>
-
+    
                         <li class="<?php echo isset($open) && $open = 'labels' ? 'active' : '' ?>"></li>
                         <li>
                             <a href="<?php echo modules("labels") ?>"><i class="fa fa-fw fa-edit"></i>Danh sách nhãn</a>

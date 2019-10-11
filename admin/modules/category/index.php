@@ -40,6 +40,7 @@
                 <th>Số thứ tự</th>
                 <th>Tên danh mục</th>
                 <th>Miêu tả</th>
+                <th>Hoạt động</th>
                 <th>Thời gian tạo</th>
                 <th>Lựa chọn</th>
             </tr>
@@ -52,6 +53,11 @@
                     <td><?php echo $stt ?></td>
                     <td><?php echo $item['name'] ?></td>
                     <td><?php echo $item['slug'] ?></td>
+                    <td>
+                        <a href="home.php?id=<?php echo $item['id'] ?>" class="btn <?php echo $item['home'] == 1 ? 'btn-info': 'btn-default' ?>">
+                            <?php echo $item['home'] == 1 ? 'Hiển Thị' : 'Không' ?>                  
+                        </a>
+                    </td>
                     <td><?php echo $item['created_at'] ?></td>
                     <td>
                         <a href="edit.php?id=<?php echo $item['id'] ?>" class="btn btn-info btn-xs"><i class="fa fa-edit"></i>Sửa</a>

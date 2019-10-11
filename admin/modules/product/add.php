@@ -20,7 +20,7 @@
             "category_id" => postInput("category_id"),
             "labels_id" => postInput("labels_id"),
             "price" => postInput("price"),
-            // "sale" => postInput("sale"),
+            "sale" => postInput("sale"),
             // hinh anh
             //"thunbar" => postInput("thunbar"),
             "content" => postInput("content"),

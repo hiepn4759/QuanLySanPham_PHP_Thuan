@@ -23,7 +23,7 @@
                         <i class="fa fa-dashboard"></i>  <a href="index.html">Bảng điều khiển</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-file"></i>
+                        <i class="fa fa-file"></i>  
                     </li>
                 </ol>
             </div>

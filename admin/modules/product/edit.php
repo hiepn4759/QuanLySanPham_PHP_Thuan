@@ -2,14 +2,22 @@
 <?php
     $open = "product";
     require_once __DIR__. "/../../autoload/autoload.php";
-    /*
-        
-        lấy ra danh sách danh mục sản phẩm
 
-     */
-    
+
+    $id = intval(getInput('id'));
+
+    $EditProduct = $db ->fetchID("product", $id);
+
+    if(empty($EditProduct))
+    {
+        $_SESSION['error'] = "Dữ liệu không tồn tại";
+        redirectAdmin("product");
+    }
+
+
     $category = $db->fetchAll("category");
     $labels = $db->fetchAll("labels");
+
 
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
@@ -17,43 +25,81 @@
         $data =
         [  
             "name" => postInput('name'),
-            "slug" => postInput("derscription")
+            "category_id" => postInput("category_id"),
+            "labels_id" => postInput("labels_id"),
+            "price" => postInput("price"),
+             "sale" => postInput("sale"),
+            // hinh anh
+            //"thunbar" => postInput("thunbar"),
+            
+            "content" => postInput("content"),
+            "numproduct" => postInput("numproduct")
         ];
         $error  = [];
         
 
+         // bắt lỗi
+        
+        $error  = [];
         if(postInput('name') == '')
         {
             $error['name'] = "Nhập lại đầy đủ tên danh mục";
         }
 
-        if(postInput('derscription') == '')
+        if(postInput('category_id') == '')
         {
-            $error['derscription'] = "Nhập lại đầy đủ miêu tả danh mục";
+            $error['category_id'] = "Chọn lại tên danh mục";
         }
 
+        if(postInput('labels_id') == '')
+        {
+            $error['labels_id'] = "Chọn lại tên nhãn";
+        }
+
+        if(postInput('price') == '')
+        {
+            $error['price'] = "Nhập lại giá";
+        }
+
+        if(postInput('content') == '')
+        {
+            $error['content'] = "Nhập lại nội dung";
+        }
+        if(postInput('numproduct') == '')
+        {
+            $error['numproduct'] = "Nhập lại số lượng";
+        }
+
+
+
+        //  neu trống thi ko loi
         //  neu trống thi ko loi
         if(empty($error))
         {
-            $isset = $db->fetchOne("product", "name = '".$data['name']."' ");
-            if(count($isset) > 0 ){
-                 $_SESSION['error'] = "Danh mục đã tồn tại";
+            
+            if(isset($_FILES['thunbar']))
+            {
+                $file_name = $_FILES['thunbar']['name'];
+                $file_tmp = $_FILES['thunbar']['tmp_name'];
+                $file_type = $_FILES['thunbar']['type'];
+                $file_erro = $_FILES['thunbar']['error'];
 
-            }
-            else{
-
-                $id_insert = $db->insert("product", $data);
-                if($id_insert > 0){
-
-                    $_SESSION['success'] = "Thêm mới danh mục sản phẩm thành công";
-                    redirectAdmin("product");
-                }else{
-                    //them moi that bai
-                     $_SESSION['error'] = "Thêm mới danh mục sản phẩm thất bại";
-                     redirectAdmin("product");
+                if($file_erro == 0)
+                {
+                    $part = ROOT ."product/";
+                    $data['thunbar'] = $file_name; 
                 }
             }
 
+            $id_update = $db->update("product", $data, array("id" => $id));
+            if($id_update > 0){
+                move_uploaded_file($file_tmp, $part.$file_name);
+                $_SESSION['success'] = "Cập nhật thành công";
+                redirectAdmin("product");
+            }else{
+                $_SESSION['error'] = "Cập nhật thất bại";
+                redirectAdmin("product");
+            }
             
         }
     }
@@ -68,7 +114,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Thêm mới sản phẩm
+                    Cập nhật sản phẩm
                 </h1>
                 <ol class="breadcrumb">
                     <li>
@@ -78,7 +124,7 @@
                         <i ></i>  <a href="index.html">Sản Phẩm</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-file"></i> Thêm mới
+                        <i class="fa fa-file"></i> Cập nhật
                     </li>
                 </ol>
                 <div class="clearfix"></div>
@@ -88,11 +134,11 @@
         </div>
         <div class="row">
             <div class="col-md-2">
-                <form  action="" method="POST">
+                <form  action="" method="POST"  enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên Sản phẩm</label>
 
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tên danh mục" name="name">
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tên danh mục" name="name" value="<?php echo $EditProduct['name'] ?>">
                         <?php if(isset( $error['name'])): ?>
 
                             <p class="text-danger"><?php echo $error['name']; ?></p>
@@ -105,12 +151,12 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Danh mục sản phẩm </label>
 
-                        <select name="" id="" class="form-control col-md-8" name="category_id">
+                        <select  id="" class="form-control col-md-8" name="category_id" >
                             <option value="">Chọn danh mục sản phẩm</option>
                             <?php foreach ($category as $item): ?>
                                 
                                 
-                                <option value="<?php echo $item['id'] ?>"><?php echo $item['name'] ?></option>
+                                <option value="<?php echo $item['id'] ?>"   <?php  echo $EditProduct['category_id'] == $item['id'] ? "selected = 'selectede'" : ''  ?>    ><?php echo $item['name'] ?></option>
 
 
                             <?php endforeach ?>
@@ -127,11 +173,11 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nhãn sản phẩm </label>
 
-                        <select name="" id="" class="form-control col-md-8" name="labels_id">
+                        <select id="" class="form-control col-md-8" name="labels_id">
                             <option value="">Chọn nhãn sản phẩm</option>
                             <?php foreach ($labels as $item): ?>
                                 
-                                <option value="<?php echo $item['id'] ?>"><?php echo $item['name'] ?></option>
+                                <option value="<?php echo $item['id'] ?>"  <?php  echo $EditProduct['labels_id'] == $item['id'] ? "selected = 'selectede'" : ''  ?> ><?php echo $item['name'] ?></option>
 
                             <?php endforeach ?>
                         </select>
@@ -149,7 +195,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Giá</label>
 
-                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="2.000.000" name="price">
+                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="2.000.000" name="price" value="<?php echo $EditProduct['price'] ?>">
                         <?php if(isset( $error['price'])): ?>
 
                             <p class="text-danger"><?php echo $error['price']; ?></p>
@@ -161,7 +207,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Giảm giá</label>
-                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="10 %" name="sale" value="0">  
+                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="10 %" name="sale" value="<?php echo $EditProduct['sale'] ?>">  
                         <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
                     
@@ -175,6 +221,8 @@
                             <p class="text-danger"><?php echo $error['thunbar']; ?></p>
 
                         <?php endif ?>
+
+                        <img src="<?php echo uploads() ?>product/<?php echo $EditProduct['thunbar'] ?>" width = "80px" height="80px">
                         
                         <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
@@ -182,8 +230,8 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nội dung</label>
 
-                       <textarea name="" class="form-control" name="content">
-                           
+                       <textarea  class="form-control" name="content">
+                           <?php echo $EditProduct['content'] ?>
                        </textarea>
                         <?php if(isset( $error['content'])): ?>
 
@@ -194,10 +242,11 @@
                         <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
                     
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Số lượng</label>
 
-                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="numproduct">
+                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="numproduct" value="<?php  echo $EditProduct['numproduct']?>">
                         <?php if(isset( $error['numproduct'])): ?>
 
                             <p class="text-danger"><?php echo $error['numproduct']; ?></p>
